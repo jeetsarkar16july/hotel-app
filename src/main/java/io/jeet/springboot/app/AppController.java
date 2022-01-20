@@ -15,7 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
 public class AppController {
-	ObjectMapper objectMapper = new ObjectMapper();
+//	ObjectMapper objectMapper = new ObjectMapper();
 	
 	@Autowired
 	private RoomAvailabilityService roomAvilabilityService;
@@ -39,11 +39,11 @@ public class AppController {
 	}
 	
 	@RequestMapping(method=RequestMethod.POST,value="/available-rooms")
-	public String addNewRoomDetails(@RequestBody String  room ){		
+	public String addNewRoomDetails(@RequestBody Rooms  room ){		
 		
 		try {
-			Rooms room1 = objectMapper.readValue(room, Rooms.class);
-			roomAvilabilityService.addRoom(room1);
+//			Rooms room1 = objectMapper.readValue(room, Rooms.class);
+			roomAvilabilityService.addRoom(room);
 			}
 			catch(Exception e) {
 				
@@ -51,6 +51,34 @@ public class AppController {
 			  return "failure";
 			}
 		return "success";
+	}
+	
+	@RequestMapping(method=RequestMethod.PUT,value="/available-rooms/{roomNo}")
+	public String updateRoomDetails(@RequestBody Rooms  room, @PathVariable String roomNo ){		
+		
+		try {			
+			roomAvilabilityService.updateRoom(roomNo , room);
+			}
+			catch(Exception e) {
+				
+			  System.out.println(e);	
+			  return "failure";
+			}
+		return "success";
+	}
+	
+	@RequestMapping(method=RequestMethod.DELETE,value="/available-rooms/{roomNo}")
+	public String deleteRoomDetails(@PathVariable String roomNo ){		
+		
+		try {			
+			roomAvilabilityService.deleteRoom(roomNo);
+			}
+			catch(Exception e) {
+				
+			  System.out.println(e);	
+			  return "delete operation failed";
+			}
+		return "deleted room details for: " + roomNo;
 	}
 
 }

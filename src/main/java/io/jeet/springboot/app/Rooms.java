@@ -20,6 +20,7 @@ public class Rooms {
 	
 	public String floor;
 	public String roomNo;
+	public String category;
 	
 
 }
